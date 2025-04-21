@@ -741,7 +741,7 @@
                             <label class="form-label" for="basic-default-password32">จำนวนเงิน*</label>
                             <div class="input-group input-group-merge">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" placeholder="100" aria-label="Amount (to the nearest dollar)">
+                                <input type="number" class="form-control" placeholder="100" >
                             </div>
                         </div>
 
@@ -750,15 +750,15 @@
                             <div class="demo-inline-spacing">
                               <button type="button" class="btn btn-outline-primary">
                                 เงินสด
-                                <span class="badge ms-1">4</span>
+                                <span class="badge ms-1">A</span>
                               </button>
                               <button type="button" class="btn btn-outline-secondary">
                                 บัตรเครดิต
-                                <span class="badge rounded-pill ms-1">4</span>
+                                <span class="badge rounded-pill ms-1">B</span>
                               </button>
                               <button type="button" class="btn btn-outline-secondary">
                                 เงินแอ๋ม
-                                <span class="badge rounded-pill ms-1">4</span>
+                                <span class="badge rounded-pill ms-1">C</span>
                               </button>
                             </div>
                           </div>
@@ -787,6 +787,7 @@
         href="#"
         target="_blank"
         class="btn btn-danger btn-buy-now"
+        onclick="Confirm()"
         >Confirm</a
       >
     </div>
@@ -808,6 +809,8 @@
     <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
+    <script src="js/index.js"></script>
+
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
