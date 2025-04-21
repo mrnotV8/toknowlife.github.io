@@ -51,22 +51,33 @@ async function Confirm(){
       const form_data_res = Object.fromEntries(form_data.entries());
       console.log(form_data_res);
 
-
-      const params = new URLSearchParams({
-        action: 'getUsers',
-      });
-
-      const response = await fetch(`https://script.google.com/macros/s/AKfycby3GC18UFJFucWCuVFBntzgv_9jbTzqcwmjroTPc38EhyWSmjgfPev5tdLoojoPDKWCjg/exec?${params}`, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const url = 'https://script.google.com/macros/s/AKfycby3GC18UFJFucWCuVFBntzgv_9jbTzqcwmjroTPc38EhyWSmjgfPev5tdLoojoPDKWCjg/exec?action=setWallet';
+  
+      const payload = {
+        details_type_code: 2,
+        details_type_text: "ค่าอาหาร",
+        details: "ข้าวเช้า",
+        meney: 60,
+        wallet_type_code: "A",
+        wallet_type_text: "เงินสด"
+      };
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+    
+        const data = await response.json();
+        console.log('Success:', data);
+      } catch (error) {
+        console.error('Error:', error);
       }
 
-      const jsonResponse = await response.json();
-      console.log('Response:', jsonResponse);
-      return jsonResponse;
+
     }
     catch (error) {
       console.error('Something went wrong:', error);
