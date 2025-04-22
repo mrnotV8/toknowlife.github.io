@@ -51,37 +51,55 @@ async function Confirm(){
       const form_data_res = Object.fromEntries(form_data.entries());
       console.log(form_data_res);
 
-      const url = 'https://script.google.com/macros/s/AKfycby3GC18UFJFucWCuVFBntzgv_9jbTzqcwmjroTPc38EhyWSmjgfPev5tdLoojoPDKWCjg/exec?action=setWallet';
-  
-      const payload = {
-        details_type_code: 2,
-        details_type_text: "ค่าอาหาร",
-        details: "ข้าวเช้า",
-        meney: 60,
-        wallet_type_code: "A",
-        wallet_type_text: "เงินสด"
-      };
-    
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-    
-        const data = await response.json();
-        console.log('Success:', data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-
+      // var data = {
+      //   details_type_code: 5,
+      //   details_type_text: "ค่าอาหาร",
+      //   details: "ข้าวเช้า",
+      //   meney: 60,
+      //   wallet_type_code: "A",
+      //   wallet_type_text: "เงินสด"
+      // };
+      
+     var resCallApi = false;
+     resCallApi = CallApi(form_data_res);
+     clearForm();
 
     }
     catch (error) {
       console.error('Something went wrong:', error);
       return false;
     }
+}
+
+async function CallApi(data) {
+
+  const url = 'https://script.google.com/macros/s/AKfycby3GC18UFJFucWCuVFBntzgv_9jbTzqcwmjroTPc38EhyWSmjgfPev5tdLoojoPDKWCjg/exec?action=setWallet';
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors', // ตั้งค่า mode เป็น no-cors
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    // หมายเหตุ: ใน mode no-cors คุณจะไม่สามารถอ่าน response ได้
+    console.log('Success:', response.data);
+    return true ;
+  } catch (error) {
+    console.error('Error:', error);
+    return false;
+  }
+}
+
+
+function clearForm() {
+  // Reset the form (this will clear all input fields)
+  document.getElementById("form_data_id").reset();
+  
+   // เคลียร์สีปุ่มทั้งหมดก่อน
+   clearButtonStyles();
 }
 
