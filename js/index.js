@@ -59,7 +59,7 @@ async function Confirm(){
       //   wallet_type_code: "A",
       //   wallet_type_text: "เงินสด"
       // };
-      
+
      var resCallApi = false;
      resCallApi = CallApi(form_data_res);
      clearForm();

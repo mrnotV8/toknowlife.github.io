@@ -385,7 +385,7 @@
                                     <option value="4">ค่าน้ำมันรถ</option>
                                     <option value="5">ค่าเดินทางไปทำงาน</option>
                                     <option value="6">ตีแบดมินตัน</option>
-                                    <option value="7">อื่นๆ</option>
+                                    <option value="999">อื่นๆ</option>
                                 </select>
                             </div>
                             <input type="hidden" id="details_type_text_id" name="details_type_text">
@@ -410,7 +410,7 @@
                         </div>
 
                         <div class="col-sm-4">
-                            <small class="text-light fw-medium">ประเภทเงิน*</small>
+                            <label class="form-label" for="basic-default-password32">ประเภทเงิน*</label>
                             <div class="demo-inline-spacing payment-buttons">
                               <button type="button" class="btn btn-outline-primary" data-value="A">
                                 เงินสด <span class="badge">A</span>
@@ -425,11 +425,6 @@
                             <input type="hidden" id="wallet_type_code_id" name="wallet_type_code">
                             <input type="hidden" id="wallet_type_text_id" name="wallet_type_text">
                         </div>
-                          
-                        <button type="button" class="btn btn-primary" onClick="Confirm()" >Send</button>
-                      
-  
-
                     </div>
                   </div>
                 </div>
@@ -453,12 +448,10 @@
 
     <div class="buy-now">
       <a
-        href=""
-        target="_blank"
+        href="javascript:void(0);"
         class="btn btn-danger btn-buy-now"
         onclick="Confirm()"
-        >Confirm</a
-      >
+      >Confirm</a>
     </div>
 
     <!-- Core JS -->
