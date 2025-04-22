@@ -3,14 +3,18 @@ const form_data_id = document.getElementById("form_data_id");
 // ตัวแปรเก็บค่าปัจจุบัน
 let currentSelectedButton = null;
 
-var wallet_type_code_id = null;
-var wallet_type_text_id = null;
+//Input
+var wallet_type_code_id = document.getElementById("wallet_type_code_id");
+var wallet_type_text_id = document.getElementById("wallet_type_text_id");
+
+//Msg
+const alert_msg_id = document.getElementById("alert_msg_id");
 
 // จัดการการคลิกปุ่ม
 document.querySelectorAll('.payment-buttons .btn').forEach(button => {
     button.addEventListener('click', function() {
       // เคลียร์สีปุ่มทั้งหมดก่อน
-      clearButtonStyles();
+      ClearButtonStyles();
       
       // ตั้งค่าสีปุ่มที่เลือก
       this.classList.remove('btn-outline-primary');
@@ -22,18 +26,20 @@ document.querySelectorAll('.payment-buttons .btn').forEach(button => {
       const text = this.textContent.trim().replace(/\s[A-Za-z]$/, ''); // ลบตัวอักษร A/B/C ท้ายชื่อ
       
       // ใส่ค่าใน hidden inputs
-      document.getElementById('wallet_type_code_id').value = value;
-      document.getElementById('wallet_type_text_id').value = text;
-
-      wallet_type_code_id = value;
-      wallet_type_text_id = text;
+      //document.getElementById('wallet_type_code_id').value = value;
+      //document.getElementById('wallet_type_text_id').value = text;
+      // wallet_type_code_id = value;
+      // wallet_type_text_id = text;
       
+      wallet_type_code_id.value = value;
+      wallet_type_text_id.value = text;
+
       console.log('เลือก:', text, 'ค่า:', value);
     });
   });
 
 // ฟังก์ชันเคลียร์สีปุ่มทั้งหมด
-function clearButtonStyles() {
+function ClearButtonStyles() {
     document.querySelectorAll('.payment-buttons .btn').forEach(btn => {
       btn.classList.remove('btn-primary');
       btn.classList.add('btn-outline-primary');
@@ -44,25 +50,46 @@ function clearButtonStyles() {
 async function Confirm(){
     try {
    
-      const sel_type_details = document.getElementById("details_type_code_id");
-      document.getElementById("details_type_text_id").value = sel_type_details.options[sel_type_details.selectedIndex].text;
+      const result = await Swal.fire({
+        title: 'ข้อความ',
+        text: 'บันทึกกระเป๋าตัง ใช่ หรือ ยกเลิก ? ',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+    });
+   
+    if (result.isConfirmed) {
+        const sel_type_details = document.getElementById("details_type_code_id");
+        document.getElementById("details_type_text_id").value = sel_type_details.options[sel_type_details.selectedIndex].text;
 
-      var form_data = new FormData(form_data_id);
-      const form_data_res = Object.fromEntries(form_data.entries());
-      console.log(form_data_res);
+        var form_data = new FormData(form_data_id);
+        const form_data_res = Object.fromEntries(form_data.entries());
+        console.log(form_data_res);
 
-      // var data = {
-      //   details_type_code: 5,
-      //   details_type_text: "ค่าอาหาร",
-      //   details: "ข้าวเช้า",
-      //   meney: 60,
-      //   wallet_type_code: "A",
-      //   wallet_type_text: "เงินสด"
-      // };
+        var resValueData = false;
+        resValueData = await ValidateData(form_data_res);
+        console.log(resValueData);
+        if(resValueData == true){
+          var resCallApi = false;
+          resCallApi = CallApi(form_data_res);
 
-     var resCallApi = false;
-     resCallApi = CallApi(form_data_res);
-     clearForm();
+          alert_msg_id.className ="";
+          alert_msg_id.classList.add("alert", "alert-success");
+          alert_msg_id.textContent= "Success";
+
+          ClearForm();
+        }
+        else{
+
+          alert_msg_id.className ="";
+          alert_msg_id.classList.add("alert", "alert-danger");
+          alert_msg_id.textContent= "Unsuccessful";
+
+        }
+
+    }
 
     }
     catch (error) {
@@ -70,6 +97,25 @@ async function Confirm(){
       return false;
     }
 }
+
+async function ValidateData(data) {
+  if (
+    !data.details_type_code ||
+    !data.details_type_text ||
+    !data.meney ||
+    !data.wallet_type_code ||
+    !data.wallet_type_text
+  ) {
+    return false;
+  }
+
+  if (isNaN(data.meney)) {
+    return false;
+  }
+
+  return true;
+}
+
 
 async function CallApi(data) {
 
@@ -95,11 +141,14 @@ async function CallApi(data) {
 }
 
 
-function clearForm() {
+function ClearForm() {
   // Reset the form (this will clear all input fields)
   document.getElementById("form_data_id").reset();
   
+  wallet_type_code_id.value = "";
+  wallet_type_text_id.value ="";
+
    // เคลียร์สีปุ่มทั้งหมดก่อน
-   clearButtonStyles();
+   ClearButtonStyles();
 }
 
