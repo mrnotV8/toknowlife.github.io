@@ -267,61 +267,42 @@
                     <h5 class="card-header">กระเป๋าตังค์แสนรู้</h5>
                     <div class="" id="alert_msg_id" role="alert"></div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
-                      
-                        <div class="input-group">
-                            <label class="form-label" for="basic-default-password32">ประเภทค่าใช้จ่าย*</label>
-                            <div class="input-group input-group-merge">
-                                <select class="form-select" id="details_type_code_id" name="details_type_code">
-                                    <option value="1">ค่าอาหาร</option>
-                                    <option value="2">ค่างวดรถ</option>
-                                    <option value="3">ค่าห้องเช่า/ค่าน้ำ/ค่าไฟ/ค่าจอดรถ</option>
-                                    <option value="4">ค่าน้ำมันรถ</option>
-                                    <option value="5">ค่าเดินทางไปทำงาน</option>
-                                    <option value="6">ตีแบดมินตัน</option>
-                                    <option value="999">อื่นๆ</option>
-                                </select>
+                        <div class="row">
+                          
+            
+                            <!-- Transactions -->
+                            <div class="col-md-6 col-lg-4 order-2 mb-6">
+                              <div class="card h-100">
+                                <div class="card-header d-flex align-items-center justify-content-between">
+                                  <h5 class="card-title m-0 me-2" id ="transactions" >Transactions</h5>
+                                  <div class="dropdown">
+                                    <button class="btn text-muted p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="bx bx-dots-vertical-rounded bx-lg"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+                                      <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                                      <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                                      <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card-body pt-4">
+                                  
+                                  <ul id="dataList" class="p-0 m-0">
+                                      <!--/ Display Transactions -->
+                                  </ul>
+
+                                </div>
+                              </div>
                             </div>
-                            <input type="hidden" id="details_type_text_id" name="details_type_text">
-                        </div>
+                            <!--/ End Transactions -->
+                          </div>
                         
-                        <div class="input-group input-group-merge speech-to-text">
-                            <label class="form-label" for="basic-default-password32">รายละเอียดค่าใช้จ่าย</label>
-                            <div class="input-group input-group-merge">
-                                <input type="text" id="details_id" name="details" class="form-control" placeholder="Say it" aria-describedby="text-to-speech-addon">
-                                <span class="input-group-text" id="text-to-speech-addon">
-                                <i class="bx bx-microphone cursor-pointer text-to-speech-toggle"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="input-group input-group-merge">
-                            <label class="form-label" for="basic-default-password32">จำนวนเงิน*</label>
-                            <div class="input-group input-group-merge">
-                                <span class="input-group-text">$</span>
-                                <input type="number" id="meney_id" name="meney" class="form-control" placeholder="1XX" >
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <label class="form-label" for="basic-default-password32">ประเภทเงิน*</label>
-                            <div class="demo-inline-spacing payment-buttons">
-                              <button type="button" class="btn btn-outline-primary" data-value="A">
-                                เงินสด <span class="badge">A</span>
-                              </button>
-                              <button type="button" class="btn btn-outline-primary" data-value="B">
-                                บัตรเครดิต <span class="badge">B</span>
-                              </button>
-                              <button type="button" class="btn btn-outline-primary" data-value="C">
-                                เงินแอ๋ม <span class="badge">C</span>
-                              </button>
-                            </div>
-                            <input type="hidden" id="wallet_type_code_id" name="wallet_type_code">
-                            <input type="hidden" id="wallet_type_text_id" name="wallet_type_text">
-                        </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </form>
 
             </div>
@@ -338,14 +319,6 @@
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <div class="buy-now">
-      <a
-        href="javascript:void(0);"
-        class="btn btn-danger btn-buy-now"
-        onclick="Confirm()"
-      >Confirm</a>
-    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -367,7 +340,7 @@
     <script src="assets/sweetalert2/dist/js/sweetalert2.all.min.js"></script>
 
     <!-- Page JS -->
-    <script src="js/index.js"></script>
+    <script src="js/dailyReport.js"></script>
 
 
     <!-- Place this tag before closing body tag for github widget button. -->

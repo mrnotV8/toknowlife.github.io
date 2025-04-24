@@ -77,7 +77,7 @@ async function Confirm(){
 
           alert_msg_id.className ="";
           alert_msg_id.classList.add("alert", "alert-success");
-          alert_msg_id.textContent= "Success";
+          alert_msg_id.textContent= "Success "+ form_data_res.details;
 
           ClearForm();
         }
