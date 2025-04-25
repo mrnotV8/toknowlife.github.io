@@ -266,6 +266,33 @@
 
               <form id="form_data_id"  method="post">
 
+                <div class="col-md-6 col-lg-4 order-2 mb-12">
+                  <div class="mb-4 row">
+                    <label for="html5-date-input" class="col-md-2 col-form-label">Start Date</label>
+                    <div class="col-md-10">
+                      <input class="form-control" 
+                      type="date" 
+                      value="2025-04-01" 
+                      id="date_start">
+                    </div>
+                  </div>
+                  <div class="mb-4 row">
+                    <label for="html5-date-input" class="col-md-2 col-form-label">End Date</label>
+                    <div class="col-md-10">
+                      <input class="form-control" 
+                      type="date" 
+                      value="2025-04-30" 
+                      id="date_end">
+                    </div>
+                  </div>
+                  <div class="mb-4 row">
+                    <button class="btn btn-primary" type="button" id="but_search" onclick="getData()">Search</button>
+                  </div>
+                  
+                </div>
+
+            </form>
+
               <!-- Custom file input -->
               <div class="row">
                 <div class="col-12">
@@ -274,7 +301,6 @@
                     <div class="" id="alert_msg_id" role="alert"></div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                         <div class="row">
-                          
             
                             <!-- Transactions -->
                             <div class="col-md-6 col-lg-4 order-2 mb-6">
@@ -286,7 +312,7 @@
                                       <i class="bx bx-dots-vertical-rounded bx-lg"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                                      <a class="dropdown-item" href="javascript:void(0);" onclick="last7Day()">Last 7 Days</a>
+                                      <a class="dropdown-item" href="javascript:void(0);">Last 7 Days</a>
                                     </div>
                                   </div>
                                 </div>
@@ -298,6 +324,7 @@
                                     <p class="mb-0">Total Balance</p>
                                     <div class="d-flex align-items-center">
                                       <h6 class="mb-0 me-1 text-success fw-medium" id="total"> </h6>
+                                      <div id="walletBreakdown"></div>
                                     </div>
                                   </div>
                                 </div>
@@ -318,8 +345,7 @@
                 </div>
               </div>
 
-            </form>
-
+            
             </div>
             <!-- / Content -->
 
@@ -355,7 +381,7 @@
     <script src="assets/sweetalert2/dist/js/sweetalert2.all.min.js"></script>
 
     <!-- Page JS -->
-    <script src="js/dailyReport.js"></script>
+    <script src="js/monthReport.js"></script>
 
 
     <!-- Place this tag before closing body tag for github widget button. -->

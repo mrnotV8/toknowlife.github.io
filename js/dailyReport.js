@@ -1,10 +1,9 @@
-
-
 // Generate API URL with current date
 var startDate = getCurrentDate();
 var endDate = getCurrentDate();
 const dateNow = document.getElementById('dateNow');
 const transactionsHeader = document.getElementById('transactions');
+const total = document.getElementById('total');
 
 // Run the function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,10 +55,14 @@ async function populateList() {
     const totalMeney = calculateTotalMeney(data);
 
     // Display total "meney" in Transactions header
-    transactionsHeader.textContent = `Transactions  Total: ${formatNumber(totalMeney)} B`;
+    //transactionsHeader.textContent = `Transactions  Total: ${formatNumber(totalMeney)} B`;
+    total.textContent =`${formatNumber(totalMeney)} B`;
 
     const sortedData = sortDataByDateDescending(data); // เรียงข้อมูล
     const dataList = document.getElementById('dataList');
+
+        // **Clear existing list items**
+    dataList.innerHTML = ""; 
 
     sortedData.forEach(item => {
         const listItem = document.createElement('li');
@@ -71,7 +74,7 @@ async function populateList() {
                     <h6 class="fw-normal mb-0">${item.details}</h6>
                 </div>
                 <div class="user-progress d-flex align-items-center gap-2">
-                    <h6 class="fw-normal mb-0">${item.meney}</h6>
+                    <h6 class="fw-normal mb-0">${formatNumber(item.meney)}</h6>
                     <span class="text-muted">${item.wallet_type_text}</span>
                 </div>
             </div>
