@@ -91,23 +91,23 @@ function renderData(groupedData) {
         dataList.appendChild(headerItem);
 
         //Item details
-        // group.items.forEach(item => {
-        //     const listItem = document.createElement('li');
-        //     listItem.className = 'd-flex align-items-center mb-6';
-        //     listItem.innerHTML = `
-        //         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-        //             <div class="me-2">
-        //                 <small class="d-block">${item.details_type_text} ${item.date_create} ${item.time_create}</small>
-        //                 <h6 class="fw-normal mb-0">${item.details}</h6>
-        //             </div>
-        //             <div class="user-progress d-flex align-items-center gap-2">
-        //                 <h6 class="fw-normal mb-0">${formatNumber(item.meney)}</h6>
-        //                 <span class="text-muted">${item.wallet_type_text}</span>
-        //             </div>
-        //         </div>
-        //     `;
-        //     dataList.appendChild(listItem);
-        // });
+        group.items.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.className = 'd-flex align-items-center mb-6';
+            listItem.innerHTML = `
+                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                        <small class="d-block">${item.date_create} ${item.time_create}</small>
+                        <h6 class="fw-normal mb-0">${item.details}</h6>
+                    </div>
+                    <div class="user-progress d-flex align-items-center gap-2">
+                        <h6 class="fw-normal mb-0">${formatNumber(item.meney)}</h6>
+                        <span class="text-muted">${item.wallet_type_text}</span>
+                    </div>
+                </div>
+            `;
+            dataList.appendChild(listItem);
+        });
     });
 }
 
