@@ -264,9 +264,10 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
 
-              <form id="form_data_id"  method="post">
-
-                <div class="col-md-6 col-lg-4 order-2 mb-12">
+            <form id="form_data_id"  method="post">
+              <div class="card mb-6">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
                   <div class="mb-4 row">
                     <label for="html5-date-input" class="col-md-2 col-form-label">Start Date</label>
                     <div class="col-md-10">
@@ -288,10 +289,10 @@
                   <div class="mb-4 row">
                     <button class="btn btn-primary" type="button" id="but_search" onclick="getData()">Search</button>
                   </div>
-                  
+              
                 </div>
-
-            </form>
+              </div>
+             </form>
 
               <!-- Custom file input -->
               <div class="row">
@@ -301,7 +302,7 @@
                     <div class="" id="alert_msg_id" role="alert"></div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                         <div class="row">
-            
+
                             <!-- Transactions -->
                             <div class="col-md-6 col-lg-4 order-2 mb-6">
                               <div class="card h-100">
@@ -330,14 +331,24 @@
                                 </div>
                                 <div class="card-body pt-4">
                                   
-                                  <ul id="dataList" class="p-0 m-0">
-                                      <!--/ Display Transactions -->
-                                  </ul>
+                                  <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>ประเภทค่าใช้จ่าย</th>
+                                        <th>เงิน</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="dataList">
+
+                                    </tbody>
+                                    </table>
 
                                 </div>
                               </div>
                             </div>
                             <!--/ End Transactions -->
+
+
                           </div>
                         
                     </div>
@@ -348,6 +359,26 @@
             
             </div>
             <!-- / Content -->
+
+
+            <div class="mt-6">
+              <!-- Modal 1-->
+              <div class="modal fade" id="expenseModal"  aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title"  id="expenseModalLabel">Modal 1</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- รายละเอียดจะถูกเพิ่มที่นี่ -->
+                        <p id="modalDetails">Loading...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
 
             <div class="content-backdrop fade"></div>
           </div>
@@ -381,6 +412,7 @@
     <script src="assets/sweetalert2/dist/js/sweetalert2.all.min.js"></script>
 
     <!-- Page JS -->
+    <script src="assets/js/ui-modals.js"></script>
     <script src="js/monthReport.js"></script>
 
 
