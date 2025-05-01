@@ -4,35 +4,28 @@ const total = document.getElementById('total');
 
 const date_start = document.getElementById('date_start');
 const date_end = document.getElementById('date_end');
+var chart; // ตัวแปรเก็บ chart ด้านนอกฟังก์ชัน
 
 
 async function getData(){
     console.log(date_start.value);
     console.log(date_end.value);
     const data = await GetApi();
+    //console.log(data);
 
-    //จำนวนทั้งหมด
+    //จำนวนเงินทั้งหมด
     const totalMeney = calculateTotalMeney(data);
-    //console.log(`รวมจำนวนเงินทั้งหมด: ${formatNumber(totalMeney)}`);
     total.textContent =`${formatNumber(totalMeney)} B`;
 
     //เงินแยกตามประเภท
-    const result = calculateByWalletType(data); // Calculate totals and group by wallet types
-    //console.log(`รวมจำนวนเงินทั้งหมด: ${formatNumber(result.totalMeney)}`);
-    Object.keys(result.walletTypes).forEach(walletType => {
-        console.log(`${walletType}: ${formatNumber(result.walletTypes[walletType])}`);
-    });
+    const resultWalletType = calculateByWalletType(data); 
+    renderMyChart(resultWalletType);
 
-    // Display breakdown by wallet_type_text
-    const walletBreakdownElement = document.getElementById('walletBreakdown');
-    walletBreakdownElement.innerHTML= "";
-    Object.keys(result.walletTypes).forEach(walletType => {
-        const walletItem = document.createElement('h6');
-        walletItem.textContent = `${walletType}: ${formatNumber(result.walletTypes[walletType])}`;
-        total.appendChild(walletItem);
-    });
+    var resGroupWalletType = groupWalletType(data);
+    console.log(resGroupWalletType);
+    renderGroupWalletType(resGroupWalletType);
 
-    //List
+    //List Dt
     const sortedData = sortDataByDetailsTypeCode(data);
     const groupedData = groupDataByDetailsType(sortedData);
     console.log(groupedData);
@@ -41,6 +34,121 @@ async function getData(){
     renderData(groupedData);
 
 }
+
+
+function renderMyChart(data) {
+  if (chart) {
+    chart.destroy(); // ล้างกราฟเก่า
+  }
+
+  var xValues = Object.keys(data.walletTypes);
+  var yValues = Object.values(data.walletTypes);
+  var barColors = ["red", "green", "blue"];
+
+  chart = new Chart("myChart", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+          color: 'black',
+          font: {
+            weight: 'bold'
+          },
+          formatter: function(value) {
+            return value.toLocaleString() + " บาท";
+          }
+        }
+      },
+      title: {
+        display: true,
+       // text: "ยอดเงินรวม: " + data.totalMeney.toLocaleString() + " บาท"
+      },
+      legend: {
+        display: false
+      },
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem) {
+            return tooltipItem.yLabel.toLocaleString() + " บาท";
+          }
+        }
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            callback: function(value) {
+              return value.toLocaleString() + " บาท";
+            }
+          }
+        }]
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+function groupWalletType(data) {
+    const groupedData = {};
+
+    data.forEach(item => {
+        const type = item.wallet_type_text;
+
+        if (!groupedData[type]) {
+            groupedData[type] = {
+                total: 0,
+                items: []
+            };
+        }
+
+        groupedData[type].total += item.meney;
+        groupedData[type].items.push(item);
+    });
+
+    return groupedData;
+}
+
+function renderGroupWalletType(groupedData) {
+
+    const dataList = document.getElementById('groupWalletType');
+
+    dataList.innerHTML = ""; 
+    Object.keys(groupedData).forEach(type => {
+        const group = groupedData[type];
+
+        // สร้างแถวใหม่
+        const row = document.createElement('tr');
+
+        // สร้างเซลล์ข้อมูลสำหรับ Type (พร้อม Event Click)
+        const typeCell = document.createElement('td');
+        typeCell.textContent = type;
+        typeCell.style.cursor = 'pointer'; // เพิ่มตัวชี้เมาส์
+        typeCell.addEventListener('click', () => showExpenseDetails(type, group.items));
+
+        // สร้างเซลล์ข้อมูลสำหรับ Total
+        const totalCell = document.createElement('td');
+        totalCell.textContent = formatNumber(group.total);
+
+        // ใส่เซลล์ลงในแถว
+        row.appendChild(typeCell);
+        row.appendChild(totalCell);
+
+        // ใส่แถวลงใน <tbody>
+        dataList.appendChild(row);
+
+
+    });
+}
+
 
 function groupDataByDetailsType(data) {
     const groupedData = {};
