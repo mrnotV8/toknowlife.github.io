@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let today = new Date();
     
     // กำหนดวันที่เริ่มต้นเป็นวันที่ 1 ของเดือนปัจจุบัน
-    let firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split("T")[0];
+    let firstDay = new Date(today.getFullYear(), today.getMonth(), 2).toISOString().split("T")[0];
 
     // กำหนดวันที่สิ้นสุดเป็นวันสุดท้ายของเดือนปัจจุบัน
     let lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split("T")[0];
