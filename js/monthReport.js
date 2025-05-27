@@ -7,6 +7,24 @@ const date_end = document.getElementById('date_end');
 var chart; // ตัวแปรเก็บ chart ด้านนอกฟังก์ชัน
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    let today = new Date();
+    
+    // กำหนดวันที่เริ่มต้นเป็นวันที่ 1 ของเดือนปัจจุบัน
+    let firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split("T")[0];
+
+    // กำหนดวันที่สิ้นสุดเป็นวันสุดท้ายของเดือนปัจจุบัน
+    let lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split("T")[0];
+
+    console.log("Start:"+firstDay);
+    console.log("End:"+lastDay);
+
+    date_start.value = firstDay;
+    date_end.value = lastDay;
+});
+
+
+
 async function getData(){
     console.log(date_start.value);
     console.log(date_end.value);
