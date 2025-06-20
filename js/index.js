@@ -154,7 +154,7 @@ function ClearForm() {
 
 //https://mrnotv8.github.io/toknowlife.github.io/
 
-function ShareCodeFriToFb() {
+async function ShareCodeFriToFb() {
 
     const refcode = "AAA";
     const herodirect = "https://mrnotv8.github.io/toknowlife.github.io";
@@ -164,7 +164,8 @@ function ShareCodeFriToFb() {
     Pre - register for Dynasty Chronicles now and help me earn epic rewards!
     Tap the link below and be my ally.`;
 
-    updateMetaTags("🔥 Enter the battlefield of the Three Kingdoms!"
+    var res = false;
+    res = await updateMetaTags("🔥 Enter the battlefield of the Three Kingdoms!"
       ,"Pre - register for Dynasty Chronicles now and help me earn epic rewards! Tap the link below and be my ally."
       ,"https://example2.com/dynasty"
     )
@@ -172,13 +173,15 @@ function ShareCodeFriToFb() {
     const hashtagfull = herodirect + '?url_ref_code=' + refcode;
     console.log(hashtagfull);
 
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(herodirect)}?ref_code=${encodeURIComponent(refclear)}&hashtag=${encodeURIComponent(hashtagfull)}`);
+    if(res == true){
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(herodirect)}?ref_code=${encodeURIComponent(refclear)}&hashtag=${encodeURIComponent(hashtagfull)}`);
+    }
 
 
 
 }
 
-function updateMetaTags(title, description, url) {
+async function updateMetaTags(title, description, url) {
     // อัพเดต og:title
     let titleMeta = document.querySelector('meta[property="og:title"]');
     if (!titleMeta) {
@@ -205,6 +208,8 @@ function updateMetaTags(title, description, url) {
         document.head.appendChild(urlMeta);
     }
     urlMeta.setAttribute('content', url);
+
+    return true;
 }
 
 
