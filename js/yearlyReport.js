@@ -1,73 +1,101 @@
-const dateNow = document.getElementById('dateNow');
-const transactionsHeader = document.getElementById('transactions');
-const total = document.getElementById('total');
+let monthlyChart, categoryChart;
+        const baseAPI = "https://script.google.com/macros/s/AKfycby3GC18UFJFucWCuVFBntzgv_9jbTzqcwmjroTPc38EhyWSmjgfPev5tdLoojoPDKWCjg/exec";
 
-const date_start = document.getElementById('date_start');
-const date_end = document.getElementById('date_end');
-var chart; // ตัวแปรเก็บ chart ด้านนอกฟังก์ชัน
+        async function fetchData() {
+            const selectedYear = document.getElementById('yearSelect').value;
+            document.querySelectorAll('.selected-year').forEach(el => el.innerText = selectedYear);
+            
+            const startDate = `${selectedYear}-01-01`;
+            const endDate = `${selectedYear}-12-31`;
+            const finalURL = `${baseAPI}?action=getWallet&start_date=${startDate}&end_date=${endDate}`;
 
+            try {
+                document.getElementById('total-year').innerText = "กำลังโหลด...";
+                const response = await fetch(finalURL);
+                const data = await response.json();
+                processData(data);
+            } catch (error) {
+                console.error("Error:", error);
+                alert("เกิดข้อผิดพลาดในการดึงข้อมูลปี " + selectedYear);
+            }
+        }
 
-document.addEventListener("DOMContentLoaded", function () {
-    let today = new Date();
-    
-    // กำหนดวันที่เริ่มต้นเป็นวันที่ 1 ของเดือนปัจจุบัน
-    let firstDay = new Date(today.getFullYear(), today.getMonth(), 2).toISOString().split("T")[0];
+        function processData(data) {
+            const months = Array(12).fill(0);
+            const categories = {};
+            let total = 0;
+            let max = 0;
 
-    // กำหนดวันที่สิ้นสุดเป็นวันสุดท้ายของเดือนปัจจุบัน
-    let lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split("T")[0];
+            if (!data || data.length === 0) {
+                alert("ไม่มีข้อมูลในปีนี้");
+                resetUI();
+                return;
+            }
 
-    console.log("Start:"+firstDay);
-    console.log("End:"+lastDay);
+            data.forEach(item => {
+                const date = new Date(item.date_create);
+                const monthIndex = date.getMonth();
+                const amount = parseFloat(item.meney) || 0;
 
-    date_start.value = firstDay;
-    date_end.value = lastDay;
+                if (amount > 0) {
+                    months[monthIndex] += amount;
+                    const catName = item.details_type_text || "อื่นๆ";
+                    categories[catName] = (categories[catName] || 0) + amount;
+                    total += amount;
+                    if (amount > max) max = amount;
+                }
+            });
 
-    // รับปีปัจจุบัน
-    const currentYear = new Date().getFullYear();
+            updateUI(total, max);
+            renderCharts(months, categories);
+        }
 
-    // วันที่เริ่มต้นของปีปัจจุบัน (1 มกราคม)
-    const startOfYear = new Date(currentYear, 0, 1);
+        function resetUI() {
+            updateUI(0, 0);
+            renderCharts(Array(12).fill(0), {});
+        }
 
-    // วันที่สุดท้ายของปีปัจจุบัน (31 ธันวาคม)
-    const endOfYear = new Date(currentYear, 11, 31);
+        function updateUI(total, max) {
+            document.getElementById('total-year').innerText = `฿${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('avg-month').innerText = `฿${(total / 12).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('max-expense').innerText = `฿${max.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
 
-    // แสดงผลลัพธ์
-    console.log("ปีปัจจุบัน:", currentYear);
-    console.log("วันที่เริ่มต้นของปี:", startOfYear.toLocaleDateString('th-TH'));
-    console.log("วันที่สุดท้ายของปี:", endOfYear.toLocaleDateString('th-TH'));
+        function renderCharts(monthData, categoryData) {
+            const ctx1 = document.getElementById('monthlyChart').getContext('2d');
+            const ctx2 = document.getElementById('categoryChart').getContext('2d');
 
-    // หรือแสดงในรูปแบบ ISO
-    console.log("\nรูปแบบ ISO:");
-    console.log("วันที่เริ่มต้นของปี:", startOfYear.toISOString().split('T')[0]);
-    console.log("วันที่สุดท้ายของปี:", endOfYear.toISOString().split('T')[0]);
+            if (monthlyChart) monthlyChart.destroy();
+            if (categoryChart) categoryChart.destroy();
 
-});
+            monthlyChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+                    datasets: [{
+                        label: 'ยอดใช้จ่าย',
+                        data: monthData,
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
 
+            categoryChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categoryData),
+                    datasets: [{
+                        data: Object.values(categoryData),
+                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#64748b', '#2dd4bf']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
 
-
-async function getData(){
-
-    console.log(date_start.value);
-    console.log(date_end.value);
-
-    const data = await GetApi();
-    console.log(data);
-
-
-}
-
-async function GetApi() {
-    try {
-        const apiUrl = `https://script.google.com/macros/s/AKfycby3GC18UFJFucWCuVFBntzgv_9jbTzqcwmjroTPc38EhyWSmjgfPev5tdLoojoPDKWCjg/exec?action=getWallet&start_date=${date_start.value}&end_date=${date_end.value}`;
-        console.log(apiUrl);
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        //console.log(data);
-        return data;
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
-    }
-}
-
-
+        fetchData();
