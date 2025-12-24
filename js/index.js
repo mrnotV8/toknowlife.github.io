@@ -152,3 +152,64 @@ function ClearForm() {
    ClearButtonStyles();
 }
 
+//https://mrnotv8.github.io/toknowlife.github.io/
+
+async function ShareCodeFriToFb() {
+
+    const refcode = "AAA";
+    const herodirect = "https://mrnotv8.github.io/toknowlife.github.io";
+    const refclear = refcode + '?Claer=Claer';
+
+    const message = `🔥 Enter the battlefield of the Three Kingdoms!
+    Pre - register for Dynasty Chronicles now and help me earn epic rewards!
+    Tap the link below and be my ally.`;
+
+    var res = false;
+    res = await updateMetaTags("🔥 Enter the battlefield of the Three Kingdoms!"
+      ,"Pre - register for Dynasty Chronicles now and help me earn epic rewards! Tap the link below and be my ally."
+      ,"https://example2.com/dynasty"
+    )
+
+    const hashtagfull = herodirect + '?url_ref_code=' + refcode;
+    console.log(hashtagfull);
+
+    if(res == true){
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(herodirect)}?ref_code=${encodeURIComponent(refclear)}&hashtag=${encodeURIComponent(hashtagfull)}`);
+    }
+
+
+
+}
+
+async function updateMetaTags(title, description, url) {
+    // อัพเดต og:title
+    let titleMeta = document.querySelector('meta[property="og:title"]');
+    if (!titleMeta) {
+        titleMeta = document.createElement('meta');
+        titleMeta.setAttribute('property', 'og:title');
+        document.head.appendChild(titleMeta);
+    }
+    titleMeta.setAttribute('content', title);
+
+    // อัพเดต og:description
+    let descMeta = document.querySelector('meta[property="og:description"]');
+    if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('property', 'og:description');
+        document.head.appendChild(descMeta);
+    }
+    descMeta.setAttribute('content', description);
+
+    // อัพเดต og:url
+    let urlMeta = document.querySelector('meta[property="og:url"]');
+    if (!urlMeta) {
+        urlMeta = document.createElement('meta');
+        urlMeta.setAttribute('property', 'og:url');
+        document.head.appendChild(urlMeta);
+    }
+    urlMeta.setAttribute('content', url);
+
+    return true;
+}
+
+
